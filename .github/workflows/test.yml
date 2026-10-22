@@ -23,14 +23,14 @@ jobs:
           #   name: renode-custom
     steps:
       - name: Clone repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
       - name: Configure git and artifacts dir
         run: |
           git config --global user.name "Antmicro"
           git config --global user.email "contact@antmicro.com"
       
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: build-results
           path: artifacts
@@ -46,7 +46,7 @@ jobs:
             tests-to-run: 'test.robot'
 
       - name: Archive Renode simulation results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
             name: test-results-${{ matrix.item.name }}
             path: |
@@ -58,7 +58,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Clone repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
       - name: Configure git and artifacts dir
         run: |
@@ -69,7 +69,7 @@ jobs:
         run: ./build.sh
 
       - name: Archive build results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
             name: build-results
             path: |
