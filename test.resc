@@ -5,10 +5,13 @@
 # at the address from stm32wba52xx.h (GPDMA1_BASE_NS = 0x40020000, 8 channels, IRQ 29-36;
 # cmsis-device-wba v1.10.0). No software is needed: the test programs the channel directly.
 
+# Fixed copy of the model (class STM32WBA55_GPDMA_Fixed), loaded at run time.
+include $ORIGIN/STM32WBA55_GPDMA_Fixed.cs
+
 $name?="TestMachine"
 $repl?=@platforms/cpus/stm32wba52.repl
 
 using sysbus
 mach create $name
 machine LoadPlatformDescription $repl
-machine LoadPlatformDescriptionFromString "gpdma1: DMA.STM32WBA55_GPDMA @ sysbus 0x40020000 { numberOfChannels: 8; [0-7] -> nvic@[29-36] }"
+machine LoadPlatformDescriptionFromString "gpdma1: DMA.STM32WBA55_GPDMA_Fixed @ sysbus 0x40020000 { numberOfChannels: 8; [0-7] -> nvic@[29-36] }"
