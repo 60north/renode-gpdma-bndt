@@ -13,7 +13,7 @@ jobs:
         item:
           # Here you can add your fork of Renode
           - repository: 'https://github.com/renode/renode'
-            revision: v1.16.1
+            revision: v1.17.0
             name: renode-stable
           - repository: 'https://github.com/renode/renode'
             revision: master

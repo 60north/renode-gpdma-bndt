@@ -1,20 +1,14 @@
-# This is a sample RESC script.
-# Please change this file and test.robot to include all necessary steps to reproduce your issue.
-# Make this repository as self contained as possible.
+# Reproduction for STM32WBA55_GPDMA: GPDMA_CxBR1.BNDT is a number of bytes, but the model
+# decrements it by 1 per data beat, so 16- and 32-bit transfers copy 2 or 4 times the block.
 #
+# No Renode platform instantiates STM32WBA55_GPDMA, so it is added to the STM32WBA52 platform
+# at the address from stm32wba52xx.h (GPDMA1_BASE_NS = 0x40020000, 8 channels, IRQ 29-36;
+# cmsis-device-wba v1.10.0). No software is needed: the test programs the channel directly.
 
 $name?="TestMachine"
-$repl?=@https://zephyr-dashboard.renode.io/zephyr_sim/076b625f21444c8ee7ada24bafa5fec55d67e6ab/44771a7b17efb5e2ebc5ace0ab959f913e3980f8/nucleo_h533re/hello_world/hello_world.repl
-$bin?=@https://zephyr-dashboard.renode.io/zephyr/076b625f21444c8ee7ada24bafa5fec55d67e6ab/nucleo_h533re/hello_world/hello_world.elf
+$repl?=@platforms/cpus/stm32wba52.repl
 
 using sysbus
 mach create $name
-machine LoadPlatformDescription $repl 
-
-showAnalyzer usart2
-
-macro reset
-"""
-    sysbus LoadELF $bin
-"""
-runMacro $reset
+machine LoadPlatformDescription $repl
+machine LoadPlatformDescriptionFromString "gpdma1: DMA.STM32WBA55_GPDMA @ sysbus 0x40020000 { numberOfChannels: 8; [0-7] -> nvic@[29-36] }"
